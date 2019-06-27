@@ -32,3 +32,7 @@ def login(request):
 
 def index(request):
     return HttpResponse('this is index')
+
+def customer_list(request):
+    all_customer = models.Customer.objects.all()
+    return render(request,'customer_list.html',{'all_customer':all_customer})

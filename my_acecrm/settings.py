@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'my_acecrm.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'my_crm',
-        'HOST': '127.0.0.1',
+        'NAME': 'wxmy_crm',
+        'HOST': '106.12.95.241',
         'PORT': 3306,
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'ct',
+        'PASSWORD':'185184',
     }
 }
 
@@ -115,9 +115,12 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+DATE_FORMAT = 'Y-m-d'
+DATETIME_FORMAT = 'Y-m-d H:i:s'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -127,3 +130,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
+

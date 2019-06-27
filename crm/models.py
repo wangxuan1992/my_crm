@@ -73,6 +73,10 @@ class UserProfile(models.Model):
     is_active = models.BooleanField(default=True)
 
 
+    def __str__(self):
+        return self.name
+
+
 class Customer(models.Model):
     """
     客户表
@@ -98,8 +102,33 @@ class Customer(models.Model):
     network_consultant = models.ForeignKey('UserProfile', blank=True, null=True, verbose_name='咨询师',
                                            related_name='network_consultant')
     consultant = models.ForeignKey('UserProfile', verbose_name="销售", related_name='customers', blank=True, null=True, )
-    class_list = models.ManyToManyField('ClassList', verbose_name="已报班级", )
+    class_list = models.ManyToManyField('ClassList', verbose_name="已报班级",blank=True)
 
+    def __str__(self):
+        return self.qq
+
+    def show_class(self):
+        return ' '.join([str(i) for i in self.class_list.all()])
+
+    def show_status(self):
+        """
+         (('signed', "已报名"),
+         ('unregistered', "未报名"),
+         ('studying', '学习中'),
+         ('paid_in_full', "学费已交齐"))
+        :return:
+        """
+
+        color_dict = {
+
+            'signed': 'green',
+            'unregistered': 'red',
+            'studying': 'yellow',
+            'paid_in_full': '#2c356e',
+        }
+
+        return '<span style="background-color: {};color: white;padding: 3px">{}</span>'.format(
+            color_dict.get(self.status), self.get_status_display())
 
 class Campuses(models.Model):
     """
@@ -107,6 +136,10 @@ class Campuses(models.Model):
     """
     name = models.CharField(verbose_name='校区', max_length=64)
     address = models.CharField(verbose_name='详细地址', max_length=512, blank=True, null=True)
+
+
+    def __str__(self):
+        return self.name
 
 
 class ClassList(models.Model):
@@ -126,6 +159,9 @@ class ClassList(models.Model):
 
     class Meta:
         unique_together = ("course", "semester", 'campuses')
+
+    def __str__(self):
+        return "{}-{}({})".format(self.get_course_display(), self.semester, self.campuses)
 
 
 class ConsultRecord(models.Model):
@@ -220,5 +256,4 @@ class StudyRecord(models.Model):
 
     class Meta:
         unique_together = ('course_record', 'student')
-
 
