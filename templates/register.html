@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户关系管理系统注册用户</title>
+
+    <link rel="stylesheet" href="{% static "css/bootstrap-3.3.7-dist/css/bootstrap.css" %}">
+
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2" style="margin-top: 90px">
+            <form class="form-horizontal" action="" method="post" novalidate>
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">{{ form_obj.username.label }}</label>
+                    <div class="col-sm-10">
+                        {{ form_obj.username }}
+                        {{ form_obj.username.errors.0 }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">{{ form_obj.password.label }}</label>
+                    <div class="col-sm-10">
+                        {{ form_obj.password }}
+                        {{ form_obj.password.errors.0 }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">{{ form_obj.re_pwd.label }}</label>
+                    <div class="col-sm-10">
+                        {{ form_obj.re_pwd }}
+                        {{ form_obj.re_pwd.errors.0 }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">{{ form_obj.name.label }}</label>
+                    <div class="col-sm-10">
+                        {{ form_obj.name }}
+                        {{ form_obj.name.errors.0 }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">{{ form_obj.mobile.label }}</label>
+                    <div class="col-sm-10">
+                        {{ form_obj.mobile }}
+                        {{ form_obj.mobile.errors.0 }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">{{ form_obj.department.label }}</label>
+                    <div class="col-sm-10">
+                        {{ form_obj.department }}
+                        {{ form_obj.department.errors.0 }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default">Sign in</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

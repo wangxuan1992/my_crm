@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户管理系统</title>
+    <link rel="stylesheet" href="{% static '/css/reset.css' %}">
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/supersized.css' %}">
+
+
+</head>
+<body oncontextmenu="return false">
+<div class="page-container">
+    <h1>客户关系管理系统</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <div>
+            <input type="text" name="username" class="username" placeholder="Username" autocomplete="off">
+        </div>
+        <div>
+            <input type="password" name="password" class="password" placeholder="Password" oncontextmenu="return false"
+                   onpaste="return false">
+        </div>
+        <button id="submit" type="submit">登录</button>
+    </form>
+    <div class="connect">
+        <p style="left: 0%;">If we can only encounter each other rather than stay with each other,then I wish we had
+            never encountered.</p>
+        <p style="margin-top: 20px; left: 0%;">如果只是遇见，不能停留，不如不遇见。</p>
+    </div>
+</div>
+<div class="alert" style="display:none">
+    <h2>消息</h2>
+    <div class="alert_con">
+        <p id="ts"></p>
+        <p style="line-height:70px"><a class="btn">确定</a></p>
+    </div>
+</div>
+
+<script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<script src="{% static "js/supersized.3.2.7.min.js" %}"></script>
+<script src="{% static "js/supersized-init.js" %}"></script>
+
+
+</body>
+</html>
