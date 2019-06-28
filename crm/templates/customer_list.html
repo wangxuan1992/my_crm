@@ -1,7 +1,15 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-        <div>
+    <div class="panel panel-default" style="margin: 15px">
+            <div class="panel-heading">
+            <h3 class="panel-title">展示客户</h3>
+        </div>
+    <div class="panel-body">
+    <div>
+                <a class="btn btn-sm btn-primary" style="margin-bottom: 5px" href="{% url 'add_customer' %}">添加</a>
+
+            </div>
 
         <table class="table table-bordered table-hover">
             <thead>
@@ -10,13 +18,14 @@
                 <th>QQ</th>
                 <th>姓名</th>
                 <th>性别</th>
-                <th>出生日期</th>
+                {#                <th>出生日期</th>#}
                 <th>客户来源</th>
                 <th>咨询课程</th>
                 <th>状态</th>
                 <th>咨询日期</th>
                 <th>销售</th>
                 <th>已报班级</th>
+                <th>操作</th>
             </tr>
             </thead>
             <tbody>
@@ -27,7 +36,7 @@
                     <td>{{ customer.qq }}</td>
                     <td>{{ customer.name|default:'未填写' }}</td>
                     <td>{{ customer.get_sex_display }}</td>
-                    <td>{{ customer.birthday }}</td>
+                    {#                    <td>{{ customer.birthday }}</td>#}
                     <td>{{ customer.source }}</td>
                     <td>{{ customer.course }}</td>
                     <td>
@@ -36,6 +45,8 @@
                     <td>{{ customer.date }}</td>
                     <td>{{ customer.consultant.name }}</td>
                     <td>{{ customer.show_class }}</td>
+                    <td><a href="{% url 'edit_customer' customer.pk %}"><i
+                            class="fa fa-pencil-square-o"></i></a></td>
 
                 </tr>
 
@@ -44,6 +55,7 @@
 
             </tbody>
         </table>
+                <div>
 
     </div>
 

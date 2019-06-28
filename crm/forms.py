@@ -45,4 +45,15 @@ class RegForm(BSForm):
 
         raise ValidationError('两次密码不一直')
 
+class CustomerForm(BSForm):
+
+    class Meta:
+        model = models.Customer
+        fileds = "__all__"
+        exclude = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['course'].widget.attrs.pop('class')
+
 
