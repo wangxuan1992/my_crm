@@ -7,6 +7,8 @@ from django.db.models import Q
 
 from crm.utils.pagination import Pagination
 
+from crm.utils.urls import reverse_url
+
 
 # def customer_list(request):
 #     if request.path_info == reverse('customer_list'):
@@ -98,7 +100,9 @@ def customer_change(request,edit_id=None):
         form_obj = CustomerForm(request.POST, instance=obj)
         if form_obj.is_valid():
             form_obj.save()
-            return redirect(reverse('customer_list'))
+
+
+            return redirect(reverse_url(request,'customer_list'))
 
     return render(request, 'customer_change.html', {'form_obj': form_obj,'title':title})
 

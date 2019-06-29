@@ -1,13 +1,14 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+    {% load my_tags %}
     <div class="panel panel-default" style="margin: 15px">
         <div class="panel-heading">
             <h3 class="panel-title">展示客户</h3>
         </div>
         <div class="panel-body">
             <div>
-                <a class="btn btn-sm btn-primary" style="margin-bottom: 5px" href="{% url 'add_customer' %}">添加</a>
+                <a class="btn btn-sm btn-primary" style="margin-bottom: 5px" href="{% reverse_url request 'add_customer' %}">添加</a>
 
             </div>
             <form action="" class="form-inline pull-right">
@@ -68,7 +69,9 @@
                             <td>{{ customer.date }}</td>
                             <td>{{ customer.consultant.name }}</td>
                             <td>{{ customer.show_class }}</td>
-                            <td><a href="{% url 'edit_customer' customer.pk %}"><i
+{#                            <td><a href="{% url 'edit_customer' customer.pk %}"><i#}
+{#                                    class="fa fa-pencil-square-o"></i></a></td>#}
+                                                    <td><a href="{% reverse_url request 'edit_customer' customer.pk %}"><i
                                     class="fa fa-pencil-square-o"></i></a></td>
 
                         </tr>
