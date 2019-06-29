@@ -1,18 +1,70 @@
 from django.shortcuts import render,redirect,HttpResponse,reverse
 from crm import models
 from crm.forms import CustomerForm
+from django.views import View
 
+from django.db.models import Q
 
 from crm.utils.pagination import Pagination
 
 
-def customer_list(request):
-    if request.path_info == reverse('customer_list'):
-        all_customer = models.Customer.objects.filter(consultant__isnull=True)
-    else:
-        all_customer = models.Customer.objects.filter(consultant=request.user_obj)
+# def customer_list(request):
+#     if request.path_info == reverse('customer_list'):
+#         all_customer = models.Customer.objects.filter(consultant__isnull=True)
+#     else:
+#         all_customer = models.Customer.objects.filter(consultant=request.user_obj)
+#
+#     return render(request,'customer_list.html',{'all_customer':all_customer})
 
-    return render(request,'customer_list.html',{'all_customer':all_customer})
+class Customerlist(View):
+
+    def get(self,request):
+        # query = request.GET.get('query', '')
+
+        q = self.search(['qq', 'name', 'date'])
+        if request.path_info == reverse('customer_list'):
+            all_customer = models.Customer.objects.filter(q,consultant__isnull=True)
+        else:
+            all_customer = models.Customer.objects.filter(consultant=request.user_obj)
+
+        return render(request, 'customer_list.html', {'all_customer': all_customer})
+
+    def post(self,request):
+        action = request.POST.get('action')
+
+        if not hasattr(self,action):
+            return HttpResponse('非法操作')
+        getattr(self,action)()
+        return self.get(request)
+
+
+    def multi_apply(self):
+        # 公户变私户
+        ids = self.request.POST.getlist('ids')
+        # 方式一
+        models.Customer.objects.filter(pk__in=ids).update(consultant=self.request.user_obj)
+
+        # 方式二
+        # self.request.user_obj.customers.add(*models.Customer.objects.filter(pk__in=ids))
+
+    def multi_pub(self):
+        # 私户变公户
+        ids = self.request.POST.getlist('ids')
+        # 方式一
+        # models.Customer.objects.filter(pk__in=ids).update(consultant=None)
+
+        # 方式二
+        self.request.user_obj.customers.remove(*models.Customer.objects.filter(pk__in=ids))
+
+    def search(self, filed_list):
+        query = self.request.GET.get('query', '')
+        # q = Q(Q(qq__contains=query) | Q(name__contains=query))
+        q = Q()
+        q.connector = 'OR'
+        for field in filed_list:
+            # q.children.append(Q(qq__contains=query))
+            q.children.append(Q(('{}__contains'.format(field), query)))
+        return q
 
 
 # def add_customer(request):
