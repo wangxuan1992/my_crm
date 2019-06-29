@@ -27,7 +27,9 @@ class Customerlist(View):
         else:
             all_customer = models.Customer.objects.filter(consultant=request.user_obj)
 
-        return render(request, 'customer_list.html', {'all_customer': all_customer})
+        page = Pagination(request.GET.get('page'),request.GET.copy(),all_customer.count(),2)
+
+        return render(request, 'customer_list.html', {'all_customer': all_customer[page.start:page.end],'page_html':page.page_html})
 
     def post(self,request):
         action = request.POST.get('action')

@@ -6,7 +6,7 @@ class AuthenticationMiddleware(MiddlewareMixin):
 
     def process_request(self,request):
 
-        if request.path_info in [reverse('login'),reverse('register')]:
+        if request.path_info in [reverse('login'),reverse('register')] or request.path_info.startswith('/admin'):
             return
 
         pk = request.session.get('pk')

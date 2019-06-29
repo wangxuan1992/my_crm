@@ -1,6 +1,8 @@
+from django.utils.safestring import mark_safe
+
 class Pagination:
 
-    def __init__(self, page_num, all_count, per_num=10, max_show=11):
+    def __init__(self, page_num, params,all_count, per_num=10, max_show=11):
 
         try:
             self.page_num = int(page_num)
@@ -20,6 +22,7 @@ class Pagination:
         # 最多显示的页面数
         self.max_show = max_show
         self.half_show = max_show // 2
+        self.params = params
 
     @property
     def start(self):
@@ -61,17 +64,20 @@ class Pagination:
         if self.page_num == 1:
             page_list.append('<li class="disabled" ><a >上一页</a></li>')
         else:
-            page_list.append('<li ><a href="?page={}">上一页</a></li>'.format(self.page_num - 1))
+            self.params['page'] = self.page_num - 1
+            page_list.append('<li ><a href="?{}">上一页</a></li>'.format(self.params.urlencode()))
 
         for i in range(page_start, page_end + 1):
+            self.params['page'] = i
             if i == self.page_num:
-                page_list.append('<li class="active" ><a href="?page={}">{}</a></li>'.format(i, i))
+                page_list.append('<li class="active" ><a href="?{}">{}</a></li>'.format(self.params.urlencode(), i))
             else:
-                page_list.append('<li><a href="?page={}">{}</a></li>'.format(i, i))
+                page_list.append('<li><a href="?{}">{}</a></li>'.format(self.params.urlencode(), i))
 
         if self.page_num == self.total_page_num:
             page_list.append('<li class="disabled"><a>下一页</a></li>')
         else:
-            page_list.append('<li><a href="?page={}">下一页</a></li>'.format(self.page_num + 1))
+            self.params['page'] = self.page_num + 1
+            page_list.append('<li><a href="?{}">下一页</a></li>'.format(self.params.urlencode()))
 
-        return ''.join(page_list)
+        return mark_safe(''.join(page_list))
