@@ -15,3 +15,4 @@ def reverse_url(request, name, *args, **kwargs):
     dic['next'] = next
     # print(dic)
     return "{}?{}".format(base_url, dic.urlencode())
+

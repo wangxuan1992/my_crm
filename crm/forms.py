@@ -57,3 +57,27 @@ class CustomerForm(BSForm):
         self.fields['course'].widget.attrs.pop('class')
 
 
+class ConsultForm(BSForm):
+
+    class Meta:
+        model = models.ConsultRecord
+        fileds = "__all__"
+        exclude = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # print(list(self.fields['customer'].choices))
+        # print(self.fields['customer'].choices)
+        # self.fields['customer'].choices =
+
+        # print(self.instance)  # obj = models.ConsultRecord(consultant=request.uer_obj)
+        # print(self.instance.consultant.customers.all())
+        customer_chioices = [(customer.pk, str(customer)) for customer in self.instance.consultant.customers.all()]
+        customer_chioices.insert(0, ('', '----------'))
+        self.fields['customer'].choices = customer_chioices
+
+        self.fields['consultant'].choices = [(self.instance.consultant.pk, self.instance.consultant), ]
+
+
+
