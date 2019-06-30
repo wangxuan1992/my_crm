@@ -80,4 +80,18 @@ class ConsultForm(BSForm):
         self.fields['consultant'].choices = [(self.instance.consultant.pk, self.instance.consultant), ]
 
 
+class EnrollmentForm(BSForm):
+
+    class Meta:
+        model = models.Enrollment
+        fields = '__all__'
+        exclude = []
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+        self.fields['customer'].choices = [(self.instance.customer.pk, self.instance.customer)]
+
+        self.fields['enrolment_class'].choices = [(i.pk, str(i)) for i in self.instance.customer.class_list.all()]
 

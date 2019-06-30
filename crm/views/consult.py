@@ -19,10 +19,11 @@ class Consultlist(View):
         q = self.search([])
         if customer_id == '0':
             all_consult = models.ConsultRecord.objects.filter(q,delete_status=False,
-                                                            consultant=request.user_obj).order_by('-date')
-        else:
-            all_consult = models.ConsultRecord.objects.filter(q, delete_status=False, customer_id=customer_id,
                                                               consultant=request.user_obj).order_by('-date')
+
+        else:
+            all_consult = models.ConsultRecord.objects.filter(q,delete_status=False,
+                                                              consultant=request.user_obj,customer_id=customer_id).order_by('-date')
 
         page = Pagination(request.GET.get('page'),request.GET.copy(),all_consult.count(),2)
 
@@ -30,13 +31,13 @@ class Consultlist(View):
 
         return render(request, 'consult_list.html',{'all_consult': all_consult[page.start:page.end], 'page_html': page.page_html})
 
-    # def post(self, request):
-    #     action = request.POST.get('action')
-    #
-    #     if not hasattr(self, action):
-    #         return HttpResponse('非法操作')
-    #     getattr(self, action)()
-    #     return self.get(request)
+    def post(self, request,customer_id):
+        action = request.POST.get('action')
+
+        if not hasattr(self, action):
+            return HttpResponse('非法操作')
+        getattr(self, action)()
+        return self.get(request,customer_id)
 
 
 

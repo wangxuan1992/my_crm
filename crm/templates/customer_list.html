@@ -47,6 +47,7 @@
                         <th>销售</th>
                         <th>已报班级</th>
                         <th>跟进记录</th>
+                        <th>报名表</th>
                         <th>操作</th>
                     </tr>
                     </thead>
@@ -71,6 +72,7 @@
                             <td>{{ customer.consultant.name }}</td>
                             <td>{{ customer.show_class }}</td>
                             <td><a href="{% url 'consult_list' customer.pk %}">查看</a></td>
+                            <td><a href="{% url 'add_enrollment' customer.pk %}">添加</a></td>
 {#                            <td><a href="{% url 'edit_customer' customer.pk %}"><i#}
 {#                                    class="fa fa-pencil-square-o"></i></a></td>#}
                                                     <td><a href="{% reverse_url request 'edit_customer' customer.pk %}"><i
