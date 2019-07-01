@@ -9,6 +9,9 @@ from crm.utils.pagination import Pagination
 
 from crm.utils.urls import reverse_url
 
+from django.db import transaction
+from django.conf import settings
+
 
 # def customer_list(request):
 #     if request.path_info == reverse('customer_list'):
@@ -29,7 +32,7 @@ class Customerlist(View):
         else:
             all_customer = models.Customer.objects.filter(consultant=request.user_obj)
 
-        page = Pagination(request.GET.get('page'),request.GET.copy(),all_customer.count(),2)
+        page = Pagination(request.GET.get('page'),request.GET.copy(),all_customer.count(),4)
 
         return render(request, 'customer_list.html', {'all_customer': all_customer[page.start:page.end],'page_html':page.page_html})
 
@@ -38,15 +41,28 @@ class Customerlist(View):
 
         if not hasattr(self,action):
             return HttpResponse('非法操作')
-        getattr(self,action)()
+        ret = getattr(self,action)()
+        if ret:
+            return ret
         return self.get(request)
 
 
     def multi_apply(self):
         # 公户变私户
         ids = self.request.POST.getlist('ids')
+
+        # 设置销售的客户上限
+        if self.request.user_obj.customers.count() + len(ids) > settings.MAX_CUSTOMER_NUM:
+            return HttpResponse('做人不要太贪心，给队友留点')
+
         # 方式一
-        models.Customer.objects.filter(pk__in=ids).update(consultant=self.request.user_obj)
+        with transaction.atomic():
+            queryset = models.Customer.objects.filter(pk__in=ids,consultant__isnull=True).select_for_update()
+            if len(ids) == queryset.__len__():
+                queryset.update(consultant=self.request.user_obj)
+                return
+            return HttpResponse('您选中的客户，应该已被其他用户领走')
+
 
         # 方式二
         # self.request.user_obj.customers.add(*models.Customer.objects.filter(pk__in=ids))

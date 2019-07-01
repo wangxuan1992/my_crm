@@ -132,3 +132,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')
 ]
 
+
+# 私户上限数量（销售的客户的上限）
+MAX_CUSTOMER_NUM = 3   # 150
+
